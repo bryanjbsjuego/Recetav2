@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-    cargarRecetas();
     registrarServiceWorker();
+    solicitarPermisoNotificacion();
+    cargarRecetas();
 });
 
 const formReceta = document.getElementById("form-receta");
@@ -12,6 +13,15 @@ function registrarServiceWorker() {
         navigator.serviceWorker.register("sw.js")
             .then((registration) => console.log("Service Worker registrado:", registration))
             .catch((error) => console.error("Error al registrar el Service Worker:", error));
+    }
+}
+
+// ✅ Pedir permiso de notificación
+function solicitarPermisoNotificacion() {
+    if ("Notification" in window) {
+        Notification.requestPermission().then(permission => {
+            console.log("Permiso de notificación:", permission);
+        });
     }
 }
 
@@ -115,17 +125,13 @@ function programarNotificaciones() {
 
 // ✅ Enviar Notificación al Service Worker
 function enviarNotificacionSW(medicamento, hora) {
-    if ("serviceWorker" in navigator && "Notification" in window) {
-        Notification.requestPermission().then((permission) => {
-            if (permission === "granted") {
-                navigator.serviceWorker.ready.then((registration) => {
-                    registration.showNotification("Hora de tu medicamento", {
-                        body: `Es hora de tomar ${medicamento} (${hora}).`,
-                        icon: "https://cdn-icons-png.flaticon.com/512/3095/3095583.png",
-                        vibrate: [200, 100, 200],
-                    });
-                });
-            }
+    if (Notification.permission === "granted") {
+        navigator.serviceWorker.ready.then(registration => {
+            registration.active.postMessage({
+                title: "Hora de tu medicamento",
+                body: `Es hora de tomar ${medicamento} (${hora}).`,
+                icon: "https://cdn-icons-png.flaticon.com/512/3095/3095583.png"
+            });
         });
     }
 }
