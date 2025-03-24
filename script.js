@@ -4,6 +4,20 @@ document.addEventListener("DOMContentLoaded", () => {
     cargarRecetas();
 });
 
+
+document.getElementById("btn-notificacion").addEventListener("click", () => {
+    Notification.requestPermission().then(permission => {
+        console.log("📢 Permiso de notificación:", permission);
+        if (permission === "granted") {
+            new Notification("Notificaciones activadas", {
+                body: "Ahora recibirás alertas.",
+                icon: "https://cdn-icons-png.flaticon.com/512/3095/3095583.png"
+            });
+        }
+    }).catch(err => console.error("❌ Error al pedir permiso:", err));
+});
+
+
 const formReceta = document.getElementById("form-receta");
 const listaMedicamentos = document.getElementById("lista-medicamentos");
 
