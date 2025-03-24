@@ -11,8 +11,13 @@ const listaMedicamentos = document.getElementById("lista-medicamentos");
 function registrarServiceWorker() {
     if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register("sw.js")
-            .then((registration) => console.log("Service Worker registrado:", registration))
-            .catch((error) => console.error("Error al registrar el Service Worker:", error));
+            .then((registration) => {
+                console.log("✅ Service Worker registrado con éxito:", registration);
+                console.log("📢 Estado del SW:", registration.active ? "Activo" : "No activo");
+            })
+            .catch((error) => console.error("❌ Error al registrar el Service Worker:", error));
+    } else {
+        console.warn("⚠️ Service Worker no soportado en este navegador.");
     }
 }
 
