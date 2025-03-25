@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 document.getElementById("btn-notificacion").addEventListener("click", () => {
+    alert("📢 Notificaciones activadas");
     Notification.requestPermission().then(permission => {
         console.log("📢 Permiso de notificación:", permission);
         if (permission === "granted") {
