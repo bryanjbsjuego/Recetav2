@@ -89,6 +89,13 @@ function guardarReceta(receta) {
     localStorage.setItem("recetas", JSON.stringify(recetas));
 }
 
+function eliminarReceta(index) {
+    let recetas = JSON.parse(localStorage.getItem("recetas")) || [];
+    recetas.splice(index, 1); // Elimina la receta en la posición 'index'
+    localStorage.setItem("recetas", JSON.stringify(recetas)); // Guarda el nuevo array
+    mostrarRecetas(); // Vuelve a mostrar la lista actualizada
+}
+
 // ✅ Mostrar recetas
 function mostrarRecetas() {
     listaMedicamentos.innerHTML = "";
