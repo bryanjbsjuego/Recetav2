@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
     cargarRecetas();
 });
 
-
 document.getElementById("btn-notificacion").addEventListener("click", () => {
     alert("📢 Notificaciones activadas");
     Notification.requestPermission().then(permission => {
@@ -17,7 +16,6 @@ document.getElementById("btn-notificacion").addEventListener("click", () => {
         }
     }).catch(err => console.error("❌ Error al pedir permiso:", err));
 });
-
 
 const formReceta = document.getElementById("form-receta");
 const listaMedicamentos = document.getElementById("lista-medicamentos");
@@ -142,6 +140,7 @@ function programarNotificaciones() {
             let tiempoFaltante = fechaToma - new Date();
 
             if (tiempoFaltante > 0) {
+                console.log(`Notificación programada para: ${fechaToma}`);
                 setTimeout(() => {
                     enviarNotificacionSW(receta.medicamento, toma.hora);
                 }, tiempoFaltante);
@@ -154,6 +153,7 @@ function programarNotificaciones() {
 function enviarNotificacionSW(medicamento, hora) {
     if (Notification.permission === "granted") {
         navigator.serviceWorker.ready.then(registration => {
+            console.log("Enviando notificación para:", medicamento, hora);
             registration.active.postMessage({
                 title: "Hora de tu medicamento",
                 body: `Es hora de tomar ${medicamento} (${hora}).`,
