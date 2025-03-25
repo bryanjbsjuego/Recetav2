@@ -131,6 +131,24 @@ function mostrarRecetas() {
 }
 
 // ✅ Programar Notificaciones
+// function programarNotificaciones() {
+//     let recetas = JSON.parse(localStorage.getItem("recetas")) || [];
+
+//     recetas.forEach((receta) => {
+//         receta.horarios.forEach((toma) => {
+//             let fechaToma = new Date(`${toma.fecha} ${toma.hora}`);
+//             let tiempoFaltante = fechaToma - new Date();
+
+//             if (tiempoFaltante > 0) {
+//                 console.log(`Notificación programada para: ${fechaToma}`);
+//                 setTimeout(() => {
+//                     enviarNotificacionSW(receta.medicamento, toma.hora);
+//                 }, tiempoFaltante);
+//             }
+//         });
+//     });
+// }
+
 function programarNotificaciones() {
     let recetas = JSON.parse(localStorage.getItem("recetas")) || [];
 
@@ -141,9 +159,12 @@ function programarNotificaciones() {
 
             if (tiempoFaltante > 0) {
                 console.log(`Notificación programada para: ${fechaToma}`);
+                // Temporarily set notifications to every minute for testing
                 setTimeout(() => {
                     enviarNotificacionSW(receta.medicamento, toma.hora);
-                }, tiempoFaltante);
+                }, tiempoFaltante / 60); // Divide tiempoFaltante by 60 to convert hours to minutes
+            } else {
+                console.log(`La hora de toma ya pasó: ${fechaToma}`);
             }
         });
     });
